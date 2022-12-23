@@ -21,8 +21,12 @@ class JiraCloud:
         self.df_status_changes = pd.DataFrame()
 
     def get_status_changes(self):
+        print("Getting status changes")
         if (self.df_status_changes.empty):
             changelogs = self.extract_status_changelogs()
+            if (len(changelogs) == 0):
+                print("No story found in project " + self.project_key)
+                return None
             status_changes = self.transform_status_changelogs(changelogs)
             self.df_status_changes = status_changes
         return self.df_status_changes
@@ -149,6 +153,7 @@ class JiraCloud:
         parameters = f"expand=changelog&maxResults=200"
         query = f"project={self.project_key} AND issuetype in (Story)"
 
+        print("Getting changelogs from JIRA with query: " + query)
         changelogs = self.execute_jql_request(query, fields, parameters)
 
         return changelogs

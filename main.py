@@ -19,6 +19,7 @@ if __name__ == "__main__":
 
     try:
         jira_exporter = JiraCloud(config)
+        print("Connected to jira project succesfully")
     except Exception as err:
         print(err)
         quit("Unable to connect to JIRA project")
